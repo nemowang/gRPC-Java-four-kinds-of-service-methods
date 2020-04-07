@@ -1,0 +1,21 @@
+server:
+  port: 8081
+  domain: localhost
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  sleuth:
+    grpc:
+      enabled: false
+  application:
+    name: example-client
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+etcd:
+  endpoints: http://localhost:2379
+
+localTest: false

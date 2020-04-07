@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.11.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.nemo.grpcexample</groupId>
+    <artifactId>gRPC-Java-four-kinds-of-service-methods</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>example-parent</name>
+    <packaging>pom</packaging>
+    <description>grpc示例</description>
+
+    <modules>
+        <module>example-client</module>
+        <module>example-server</module>
+        <!--<module>example-server</module>-->
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <!--grpc相关-->
+        <protoc.version>3.10.0</protoc.version>
+        <grpc.version>1.25.0</grpc.version>
+        <guice-grpc.version>1.1.13</guice-grpc.version>
+        <protobuf-java-format.version>1.4</protobuf-java-format.version>
+        <os-maven-plugin.version>1.6.2</os-maven-plugin.version>
+        <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
+        <guice-throwingproviders.version>4.2.2</guice-throwingproviders.version>
+        <pgv-java.version>0.2.0</pgv-java.version>
+
+        <!--日志相关-->
+        <log4j2.version>2.11.2</log4j2.version>
+        <grpc-client-spring-boot-starter>2.6.1.RELEASE</grpc-client-spring-boot-starter>
+
+        <!--文档相关-->
+        <swagger.version>2.8.0</swagger.version>
+
+        <!--工具相关-->
+        <hutool.version>5.0.7</hutool.version>
+        <fastjson.version>1.2.62</fastjson.version>
+
+        <!--test-->
+        <junit.version>4.12</junit.version>
+        <mockito.version>1.9.5</mockito.version>
+        <hamcrest.version>2.1</hamcrest.version>
+
+        <!--二维码相关-->
+        <zxing.version>3.4.0</zxing.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--日志相关-->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency> <!-- 桥接：告诉Slf4j使用Log4j2 -->
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency> <!-- 桥接：告诉commons logging使用Log4j2 -->
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jcl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+
+            <!--grpc相关-->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-bom</artifactId>
+                <version>${grpc.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.dooffe.guice-grpc</groupId>
+                <artifactId>guice-grpc.common</artifactId>
+                <version>${guice-grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject.extensions</groupId>
+                <artifactId>guice-throwingproviders</artifactId>
+                <version>${guice-throwingproviders.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-client-spring-boot-starter</artifactId>
+                <version>${grpc-client-spring-boot-starter}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.protobuf-java-format</groupId>
+                <artifactId>protobuf-java-format</artifactId>
+                <version>${protobuf-java-format.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.envoyproxy.protoc-gen-validate</groupId>
+                <artifactId>pgv-java-stub</artifactId>
+                <version>${pgv-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.envoyproxy.protoc-gen-validate</groupId>
+                <artifactId>pgv-java-grpc</artifactId>
+                <version>${pgv-java.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>protobuf-java</artifactId>
+                <groupId>com.google.protobuf</groupId>
+                <version>${protoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>${protoc.version}</version>
+            </dependency>
+
+            <!--文档相关-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <!--工具相关-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.verson}</version>
+            </dependency>
+
+            <!--二维码相关-->
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
