@@ -6,8 +6,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.11.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.2.6.RELEASE</version>
+        <relativePath/>
     </parent>
     <groupId>com.nemo.grpcexample</groupId>
     <artifactId>gRPC-Java-four-kinds-of-service-methods</artifactId>
@@ -33,6 +33,18 @@
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
         <guice-throwingproviders.version>4.2.2</guice-throwingproviders.version>
         <pgv-java.version>0.2.0</pgv-java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <guice.version>4.2.2</guice.version>
+        <jetcd.version>0.4.1</jetcd.version>
+        <fastjson.version>1.2.62</fastjson.version>
+        <zipkin.brave.version>5.9.1</zipkin.brave.version>
+        <zipkin.reporter.version>2.11.1</zipkin.reporter.version>
+        <lombok.version>1.18.10</lombok.version>
+        <jedis.version>3.1.0</jedis.version>
+        <spring-beans.version>5.2.2.RELEASE</spring-beans.version>
+        <commons-lang3.version>3.9</commons-lang3.version>
+        <sequence.version>1.0.0</sequence.version>
 
         <!--日志相关-->
         <log4j2.version>2.11.2</log4j2.version>
@@ -56,6 +68,131 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-bom</artifactId>
+                <version>${grpc.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-bom</artifactId>
+                <version>${zipkin.brave.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.reporter2</groupId>
+                <artifactId>zipkin-reporter-bom</artifactId>
+                <version>${zipkin.reporter.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.envoyproxy.protoc-gen-validate</groupId>
+                <artifactId>pgv-java-stub</artifactId>
+                <version>${pgv-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.envoyproxy.protoc-gen-validate</groupId>
+                <artifactId>pgv-java-grpc</artifactId>
+                <version>${pgv-java.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>protobuf-java</artifactId>
+                <groupId>com.google.protobuf</groupId>
+                <version>${protoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>${protoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.etcd</groupId>
+                <artifactId>jetcd-core</artifactId>
+                <version>${jetcd.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <type>jar</type>
+                <version>${jedis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring-beans.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.izern</groupId>
+                <artifactId>sequence</artifactId>
+                <version>${sequence.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-instrumentation-grpc</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.reporter2</groupId>
+                <artifactId>zipkin-sender-okhttp3</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-context-slf4j</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-context-log4j2</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-library</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+
             <!--日志相关-->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
@@ -87,11 +224,6 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.dooffe.guice-grpc</groupId>
-                <artifactId>guice-grpc.common</artifactId>
-                <version>${guice-grpc.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.inject.extensions</groupId>
                 <artifactId>guice-throwingproviders</artifactId>
                 <version>${guice-throwingproviders.version}</version>
@@ -105,26 +237,6 @@
                 <groupId>com.googlecode.protobuf-java-format</groupId>
                 <artifactId>protobuf-java-format</artifactId>
                 <version>${protobuf-java-format.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.envoyproxy.protoc-gen-validate</groupId>
-                <artifactId>pgv-java-stub</artifactId>
-                <version>${pgv-java.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.envoyproxy.protoc-gen-validate</groupId>
-                <artifactId>pgv-java-grpc</artifactId>
-                <version>${pgv-java.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>protobuf-java</artifactId>
-                <groupId>com.google.protobuf</groupId>
-                <version>${protoc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.protobuf</groupId>
-                <artifactId>protobuf-java-util</artifactId>
-                <version>${protoc.version}</version>
             </dependency>
 
             <!--文档相关-->
