@@ -8,7 +8,7 @@ import "server-entity.proto";
 
 package server;
 
-service example {
+service ExampleService {
     // 普通方式传输
     rpc sayHelloWorld(StringRequest) returns (StringResponse);
 }

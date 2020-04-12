@@ -64,6 +64,8 @@
 
         <!--二维码相关-->
         <zxing.version>3.4.0</zxing.version>
+
+        <grpc-starter.verson>3.4.1</grpc-starter.verson>
     </properties>
 
     <dependencyManagement>
@@ -280,6 +282,12 @@
                 <groupId>com.google.zxing</groupId>
                 <artifactId>core</artifactId>
                 <version>${zxing.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.lognet</groupId>
+                <artifactId>grpc-spring-boot-starter</artifactId>
+                <version>${grpc-starter.verson}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
