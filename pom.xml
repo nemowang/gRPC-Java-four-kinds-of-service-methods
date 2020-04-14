@@ -66,6 +66,7 @@
         <zxing.version>3.4.0</zxing.version>
 
         <grpc-starter.verson>3.4.1</grpc-starter.verson>
+        <springboot-starter-grpc.version>1.0.0.RELEASE</springboot-starter-grpc.version>
     </properties>
 
     <dependencyManagement>
@@ -288,6 +289,12 @@
                 <groupId>io.github.lognet</groupId>
                 <artifactId>grpc-spring-boot-starter</artifactId>
                 <version>${grpc-starter.verson}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.anoyi</groupId>
+                <artifactId>spring-boot-starter-grpc</artifactId>
+                <version>${springboot-starter-grpc.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
