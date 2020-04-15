@@ -12,32 +12,12 @@
     <groupId>com.nemo.grpcexample</groupId>
     <artifactId>example-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <!-- grpc 依赖版本 -->
-    <properties>
-        <grpc.version>1.25.0</grpc.version>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
-        <dependency> &lt;!&ndash; 桥接：告诉Slf4j使用Log4j2 &ndash;&gt;
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-        </dependency>
-        <dependency> &lt;!&ndash; 桥接：告诉commons logging使用Log4j2 &ndash;&gt;
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-jcl</artifactId>
-        </dependency>-->
         <!--文档相关-->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -52,41 +32,31 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
-        <!--二维码相关-->
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-        </dependency>
 
-       <!--grpc相关-->
+        <!--grpc相关-->
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty-shaded</artifactId>
-            <version>${grpc.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-protobuf</artifactId>
-            <version>${grpc.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-core</artifactId>
-            <version>${grpc.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-stub</artifactId>
-            <version>${grpc.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.devh</groupId>
             <artifactId>grpc-server-spring-boot-starter</artifactId>
-            <version>2.4.0.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.grpc</groupId>
@@ -97,12 +67,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>2.2.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>4.2.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
