@@ -1,7 +1,9 @@
 package com.nemo.grpcexampleclient.controller;
 
-import com.nemo.grpcexampleserver.ServerSideStreamServiceGrpc;
-import net.devh.boot.grpc.client.inject.GrpcClient;
+import com.nemo.grpcexampleclient.service.ServerSideStreamService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,8 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("ServerSideStream")
 public class ServerSideStreamController {
 
-    @GrpcClient("server-service")
-    private ServerSideStreamServiceGrpc.ServerSideStreamServiceBlockingStub blockingStub;
+    @Autowired
+    private ServerSideStreamService serverSideStreamService;
+
+    @PostMapping("serverStreamString")
+    @ApiOperation(value = "服务端流式传输 - 字符串")
+    public String serverStreamString() {
+        return serverSideStreamService.serverStreamString();
+    }
 
     // TODO APIs
+
 }
