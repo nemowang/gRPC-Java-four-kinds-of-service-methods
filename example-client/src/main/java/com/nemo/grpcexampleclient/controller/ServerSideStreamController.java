@@ -48,7 +48,8 @@ public class ServerSideStreamController {
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
         response.setContentType("application/octet-stream");
         try {
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + URLEncoder.encode("服务端流式传输下载文件." + fileType, "UTF-8"));
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment;filename=" + URLEncoder.encode("服务端流式传输下载文件." + fileType, "UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
         }
