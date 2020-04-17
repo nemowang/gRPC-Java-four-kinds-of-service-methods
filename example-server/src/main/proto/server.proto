@@ -10,23 +10,23 @@ package server;
 
 service ExampleService {
     // 普通方式传输
-    rpc sayHelloWorld (StringRequest) returns (StringResponse);
+    rpc sayHelloWorld(StringRequest) returns (StringResponse);
 }
 
 // 服务端流式传输
 service ServerSideStreamService {
-    // TODO 服务端流式传输 - 字符串
-    rpc serverStreamString (Empty) returns (stream StringResponse);
+    // 服务端流式传输 - 字符串
+    rpc serverStreamString(Empty) returns (stream StringResponse);
 
     // TODO 服务端流式传输 - bytes
-    rpc serverStreamBytes (Empty) returns (stream BytesResponse);
+    rpc serverStreamBytes(Empty) returns (stream BytesResponse);
 }
 
 // 客户端流式传输
 service ClientSideStreamService {
     // TODO 客户端流式传输 - 字符串
-    rpc clientStreamString (stream StringRequest) returns (StringResponse);
+    rpc clientStreamString(stream StringRequest) returns (StringResponse);
 
     // TODO 客户端流式传输 - bytes 返回上传文件的保存路径
-    rpc clientStreamBytes (stream BytesRequest) returns (StringResponse);
+    rpc clientStreamBytes(stream BytesRequest) returns (StringResponse);
 }
