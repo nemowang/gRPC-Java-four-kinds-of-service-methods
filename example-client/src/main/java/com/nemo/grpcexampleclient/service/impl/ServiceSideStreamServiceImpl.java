@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -47,5 +48,15 @@ public class ServiceSideStreamServiceImpl implements ServerSideStreamService {
         JSON json = JSONUtil.parse(result);
         log.info(json.toStringPretty());
         return json.toStringPretty();
+    }
+
+    /**
+     * 服务端流式传输 - bytes
+     * @return
+     */
+    @Override
+    public File serverStreamBytes() {
+        // TODO
+        return null;
     }
 }

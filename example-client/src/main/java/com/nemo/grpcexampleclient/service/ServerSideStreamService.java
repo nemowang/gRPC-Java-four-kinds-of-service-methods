@@ -1,5 +1,7 @@
 package com.nemo.grpcexampleclient.service;
 
+import java.io.File;
+
 /**
  * @author Nemo
  * @version 1.0
@@ -13,4 +15,9 @@ public interface ServerSideStreamService {
      */
     String serverStreamString();
 
+    /**
+     * 服务端流式传输 - bytes
+     * @return
+     */
+    File serverStreamBytes();
 }
