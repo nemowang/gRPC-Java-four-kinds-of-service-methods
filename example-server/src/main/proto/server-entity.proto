@@ -6,10 +6,22 @@ option java_outer_classname = "ServerEntityProto";
 
 package server;
 
+message Empty {}
+
 message StringRequest {
     string value = 1;
 }
 
 message StringResponse {
     string value = 1;
+}
+
+// 服务端流式传输响应参数
+message BytesResponse {
+    bytes data = 1;
+}
+
+// 客户端流式传输请求参数
+message BytesRequest {
+    bytes data = 1;
 }

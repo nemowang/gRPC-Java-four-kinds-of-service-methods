@@ -16,6 +16,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @GrpcService
 public class ExampleGrpcService extends ExampleServiceGrpc.ExampleServiceImplBase {
 
+
     @Override
     public void sayHelloWorld(StringRequest request, StreamObserver<StringResponse> responseObserver) {
         String hello = request.getValue() + " says hello world";
