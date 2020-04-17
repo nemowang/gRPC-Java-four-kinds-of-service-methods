@@ -38,14 +38,13 @@ public class ServerSideStreamController {
         return serverSideStreamService.serverStreamString();
     }
 
-    // TODO APIs
     @PostMapping("serverStreamBytes")
     @ApiOperation(value = "服务端流式传输 - bytes")
     public void serverStreamBytes(HttpServletResponse response) {
         File file = serverSideStreamService.serverStreamBytes();
         String fileType = FileTypeUtil.getType(file);
 
-        // 配置response
+        // step1. 配置response
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
         response.setContentType("application/octet-stream");
         try {
@@ -54,10 +53,10 @@ public class ServerSideStreamController {
             e.printStackTrace();
         }
 
-        // 实现文件下载
+        // step2. 实现文件下载
         byte[] buffer = new byte[1024];
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-             final ServletOutputStream os = response.getOutputStream()) {
+             ServletOutputStream os = response.getOutputStream()) {
             int length;
             while ((length = bis.read(buffer)) != -1) {
                 os.write(buffer, 0, length);
@@ -67,7 +66,7 @@ public class ServerSideStreamController {
             log.info("服务端流式传输接口 文件下载失败");
             e.printStackTrace();
         } finally {
-            final boolean del = FileUtil.del(file);
+            boolean del = FileUtil.del(file);
             log.info("删除缓冲文件：" + del);
         }
     }

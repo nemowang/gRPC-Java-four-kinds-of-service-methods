@@ -3,6 +3,7 @@ package com.nemo.grpcexampleclient.service.impl;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.nemo.grpcexampleclient.service.ServerSideStreamService;
+import com.nemo.grpcexampleserver.BytesResponse;
 import com.nemo.grpcexampleserver.Empty;
 import com.nemo.grpcexampleserver.ServerSideStreamServiceGrpc;
 import com.nemo.grpcexampleserver.StringResponse;
@@ -10,10 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Nemo
@@ -56,7 +58,36 @@ public class ServiceSideStreamServiceImpl implements ServerSideStreamService {
      */
     @Override
     public File serverStreamBytes() {
-        // TODO
-        return null;
+        // step1. 接收服务端返回的数据 通过服务端流式传输接口获取到的数据是继承了Iterator接口的类型
+        Iterator<BytesResponse> responseIterator = blockingStub.serverStreamBytes(Empty.newBuilder().build());
+        String bufferFilePath = "./" + UUID.randomUUID().toString() + "serverStreamBytes";
+
+        BufferedOutputStream bufferedOutputStream = null;
+        FileOutputStream fos = null;
+        while (responseIterator.hasNext()) {
+            BytesResponse next = responseIterator.next();
+            // step2. 把分段传输的数据写入到 bufferOutputStream 流中
+            try {
+                fos = new FileOutputStream(bufferFilePath);
+                bufferedOutputStream = new BufferedOutputStream(fos);
+                bufferedOutputStream.write(next.getData().toByteArray());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            if (bufferedOutputStream != null) {
+                // step3. 接收到全部数据后，把数据flush到文件(File)中
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+            }
+            if (fos != null) {
+                fos.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new File(bufferFilePath);
     }
 }
