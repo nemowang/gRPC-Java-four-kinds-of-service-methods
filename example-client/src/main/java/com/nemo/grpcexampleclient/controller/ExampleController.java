@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExampleController {
 
     @GrpcClient("server-service")
-    ExampleServiceGrpc.ExampleServiceBlockingStub exampleServiceBlockingStub;
+    private ExampleServiceGrpc.ExampleServiceBlockingStub exampleServiceBlockingStub;
 
     @PostMapping("sayHelloWorld")
     @ApiOperation(value = "普通方式传输")
