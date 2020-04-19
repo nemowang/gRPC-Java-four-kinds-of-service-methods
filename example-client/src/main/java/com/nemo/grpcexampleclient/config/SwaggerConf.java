@@ -35,7 +35,7 @@ public class SwaggerConf {
                 .title("example-api")
                 .description("grpc 4种请求测试api")
                 .termsOfServiceUrl("")
-                .contact(new Contact("Nemo", "cnblogs.com/nemowang1996/", "nemowang77@163.com"))
+                .contact(new Contact("Nemo", "https://cnblogs.com/nemowang1996/", "nemowang77@163.com"))
                 .version("1.0")
                 .build();
     }

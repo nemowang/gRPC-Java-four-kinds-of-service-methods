@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.nemo.grpcexample</groupId>
     <artifactId>example-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -71,7 +70,6 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
