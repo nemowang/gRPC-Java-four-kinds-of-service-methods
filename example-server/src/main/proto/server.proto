@@ -18,7 +18,7 @@ service ServerSideStreamService {
     // 服务端流式传输 - 字符串
     rpc serverStreamString(Empty) returns (stream StringResponse);
 
-    // TODO 服务端流式传输 - bytes
+    // 服务端流式传输 - bytes
     rpc serverStreamBytes(Empty) returns (stream BytesResponse);
 }
 

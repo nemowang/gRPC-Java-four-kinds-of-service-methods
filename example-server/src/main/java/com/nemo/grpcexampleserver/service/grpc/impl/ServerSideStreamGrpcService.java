@@ -14,7 +14,6 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 
 /**
@@ -43,9 +42,8 @@ public class ServerSideStreamGrpcService extends ServerSideStreamServiceGrpc.Ser
         StringResponse.Builder builder = StringResponse.newBuilder();
         // 通过流分7次向客户端发送数据
         for (int i = 0; i < 7; i++) {
-            String message = "第" + i + "次发送数据 ";
-            responseObserver.onNext(builder.setValue(message).build());
-            log.info(message);
+            builder.setValue("服务端流式传输 - 字符串 第" + i + "次发送数据" + System.lineSeparator());
+            responseObserver.onNext(builder.build());
         }
         responseObserver.onCompleted();
     }
