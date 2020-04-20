@@ -42,15 +42,7 @@ public class ServiceSideStreamServiceImpl implements ServerSideStreamService {
         while (responseIterator.hasNext()) {
             resultBuilder.append(responseIterator.next().getValue());
         }
-
-        // 封装接口结果
-        Map<String, Object> result = new HashMap<String, Object>() {{
-            put("code", 0);
-            put("data", resultBuilder.toString());
-        }};
-        JSON json = JSONUtil.parse(result);
-        log.info(json.toStringPretty());
-        return json.toStringPretty();
+        return resultBuilder.toString();
     }
 
     /**
