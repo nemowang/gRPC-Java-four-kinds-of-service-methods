@@ -1,12 +1,21 @@
 package com.nemo.grpcexampleserver.service.grpc.impl;
 
+import cn.hutool.core.io.FileUtil;
 import com.nemo.grpcexampleserver.BytesRequest;
 import com.nemo.grpcexampleserver.ClientSideStreamServiceGrpc;
 import com.nemo.grpcexampleserver.StringRequest;
 import com.nemo.grpcexampleserver.StringResponse;
 import io.grpc.stub.StreamObserver;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
+
+import javax.inject.Inject;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * @author Nemo
@@ -17,6 +26,13 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @GrpcService
 public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.ClientSideStreamServiceImplBase {
 
+    private final String uploadFilePath;
+
+    @Inject
+    public ClientSideStreamGrpcService(@Value("${uploadFilePath}") String uploadFilePath) {
+        this.uploadFilePath = uploadFilePath;
+    }
+
     /**
      * 客户端流式传输 - 字符串
      * @param responseObserver
@@ -24,12 +40,14 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
      */
     @Override
     public StreamObserver<StringRequest> clientStreamString(StreamObserver<StringResponse> responseObserver) {
+        // 使用StringBuilder接收多次从客户端传来的数据
         StringBuilder stringBuilder = new StringBuilder();
 
         return new StreamObserver<StringRequest>() {
             @Override
             public void onNext(StringRequest request) {
                 log.info("clientStreamString onNext request={}", request.getValue());
+                // 拼接客户端分批次传输的数据
                 stringBuilder.append(request.getValue());
             }
 
@@ -53,8 +71,56 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
      * @param responseObserver
      * @return
      */
+    @SneakyThrows
     @Override
     public StreamObserver<BytesRequest> clientStreamBytes(StreamObserver<StringResponse> responseObserver) {
-        return super.clientStreamBytes(responseObserver);
+        File uploadFile = new File(uploadFilePath + System.currentTimeMillis());
+        // 使用BufferedOutputStream流接收多次从客户端传来的数据
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(uploadFile));
+        StringBuilder fileName = new StringBuilder();
+        StringBuilder serverPort = new StringBuilder();
+        StringBuilder serverDomain = new StringBuilder();
+
+        return new StreamObserver<BytesRequest>() {
+            @SneakyThrows
+            @Override
+            public void onNext(BytesRequest bytesRequest) {
+                log.info("clientStreamBytes onNext.");
+                // 拼接客户端分批次传输的数据
+                bufferedOutputStream.write(bytesRequest.getData().toByteArray());
+                if (StringUtils.isEmpty(fileName.toString())) {
+                    fileName.append(bytesRequest.getFileName());
+                }
+                if (StringUtils.isEmpty(serverPort.toString())) {
+                    serverPort.append(bytesRequest.getServerPort());
+                }
+                if (StringUtils.isEmpty(serverDomain.toString())) {
+                    serverDomain.append(bytesRequest.getServerDomain());
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                log.error("clientStreamBytes onError: ", throwable);
+            }
+
+            @SneakyThrows
+            @Override
+            public void onCompleted() {
+                log.info("clientStreamBytes onCompleted.");
+                // 把流中保存的数据flush到文件中
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+
+                // 重命名文件，保留源文件的名名
+                File file = FileUtil.rename(uploadFile, System.currentTimeMillis() + fileName.toString(), true, true);
+
+                StringResponse.Builder resultBuilder = StringResponse.newBuilder();
+                String result = "http://" + serverDomain + ":" + serverPort + "/" + file.getName();
+                resultBuilder.setValue(result);
+                responseObserver.onNext(resultBuilder.build());
+                responseObserver.onCompleted();
+            }
+        };
     }
 }
