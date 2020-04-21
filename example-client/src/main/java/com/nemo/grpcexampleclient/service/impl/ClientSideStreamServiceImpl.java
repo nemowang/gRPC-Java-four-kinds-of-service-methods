@@ -92,9 +92,7 @@ public class ClientSideStreamServiceImpl implements ClientSideStreamService {
         }
         CountDownLatch countDownLatch = new CountDownLatch(1);
         BytesRequest.Builder builder = BytesRequest.newBuilder();
-        builder.setFileName(file.getOriginalFilename())
-                .setServerDomain(serverDomain)
-                .setServerPort(serverPort);
+        builder.setFileName(file.getOriginalFilename());
         log.info("OriginalFileName: " + file.getOriginalFilename());
 
         StringBuilder result = new StringBuilder();
@@ -128,6 +126,7 @@ public class ClientSideStreamServiceImpl implements ClientSideStreamService {
         observer.onCompleted();
 
         countDownLatch.await(1, TimeUnit.MINUTES);
+        result.insert(0, "http://" + serverDomain + ":" + serverPort + "/");
         return result.toString();
     }
 }

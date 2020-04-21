@@ -25,6 +25,4 @@ message BytesResponse {
 message BytesRequest {
     bytes data = 1;
     string fileName = 2;
-    string serverPort = 3;
-    string serverDomain = 4;
 }
