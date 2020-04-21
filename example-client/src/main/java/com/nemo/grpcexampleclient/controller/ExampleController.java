@@ -3,6 +3,7 @@ package com.nemo.grpcexampleclient.controller;
 import com.nemo.grpcexampleserver.ExampleServiceGrpc;
 import com.nemo.grpcexampleserver.StringRequest;
 import com.nemo.grpcexampleserver.StringResponse;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/4/11
  */
 @RestController
+@Api(value = "简单模式传输", tags = "简单模式传输")
 @RequestMapping("Test")
 public class ExampleController {
 

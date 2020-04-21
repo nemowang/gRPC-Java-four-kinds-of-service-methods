@@ -1,6 +1,7 @@
 package com.nemo.grpcexampleclient.controller;
 
 import com.nemo.grpcexampleclient.service.ClientSideStreamService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2020/4/16
  */
 @RestController
-@RequestMapping("ServerSideStream")
+@Api(value = "客户端流式传输", tags = "客户端流式传输")
+@RequestMapping("ClientSideStream")
 public class ClientSideStreamController {
 
     @Autowired
