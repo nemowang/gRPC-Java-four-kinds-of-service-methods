@@ -78,8 +78,7 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
         // 使用BufferedOutputStream流接收多次从客户端传来的数据
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(uploadFile));
         StringBuilder fileName = new StringBuilder();
-        StringBuilder serverPort = new StringBuilder();
-        StringBuilder serverDomain = new StringBuilder();
+
 
         return new StreamObserver<BytesRequest>() {
             @SneakyThrows
@@ -90,12 +89,6 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
                 bufferedOutputStream.write(bytesRequest.getData().toByteArray());
                 if (StringUtils.isEmpty(fileName.toString())) {
                     fileName.append(bytesRequest.getFileName());
-                }
-                if (StringUtils.isEmpty(serverPort.toString())) {
-                    serverPort.append(bytesRequest.getServerPort());
-                }
-                if (StringUtils.isEmpty(serverDomain.toString())) {
-                    serverDomain.append(bytesRequest.getServerDomain());
                 }
             }
 
@@ -116,8 +109,7 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
                 File file = FileUtil.rename(uploadFile, System.currentTimeMillis() + fileName.toString(), true, true);
 
                 StringResponse.Builder resultBuilder = StringResponse.newBuilder();
-                String result = "http://" + serverDomain + ":" + serverPort + "/" + file.getName();
-                resultBuilder.setValue(result);
+                resultBuilder.setValue(file.getName());
                 responseObserver.onNext(resultBuilder.build());
                 responseObserver.onCompleted();
             }
