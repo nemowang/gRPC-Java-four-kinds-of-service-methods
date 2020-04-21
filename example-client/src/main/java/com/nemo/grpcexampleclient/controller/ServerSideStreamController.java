@@ -3,6 +3,7 @@ package com.nemo.grpcexampleclient.controller;
 import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.io.FileUtil;
 import com.nemo.grpcexampleclient.service.ServerSideStreamService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import java.net.URLEncoder;
  */
 @Slf4j
 @RestController
+@Api(value = "服务端流式传输", tags = "服务端流式传输")
 @RequestMapping("ServerSideStream")
 public class ServerSideStreamController {
 
