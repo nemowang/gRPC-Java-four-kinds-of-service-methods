@@ -105,7 +105,7 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
                 bufferedOutputStream.flush();
                 bufferedOutputStream.close();
 
-                // 重命名文件，保留源文件的名名
+                // 重命名文件，保留源文件的扩展名
                 File file = FileUtil.rename(uploadFile, System.currentTimeMillis() + fileName.toString(), true, true);
 
                 StringResponse.Builder resultBuilder = StringResponse.newBuilder();
