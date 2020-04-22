@@ -1,6 +1,8 @@
 package com.nemo.grpcexampleserver.service.grpc.impl;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ArrayUtil;
 import com.nemo.grpcexampleserver.BytesRequest;
 import com.nemo.grpcexampleserver.ClientSideStreamServiceGrpc;
 import com.nemo.grpcexampleserver.StringRequest;
@@ -13,9 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 
 /**
  * @author Nemo
@@ -111,6 +111,54 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
                 StringResponse.Builder resultBuilder = StringResponse.newBuilder();
                 resultBuilder.setValue(file.getName());
                 responseObserver.onNext(resultBuilder.build());
+                responseObserver.onCompleted();
+            }
+        };
+    }
+
+    /**
+     * 客户端流式传输 - bytes 服务端通过byte数组接收
+     * @param responseObserver
+     * @return
+     */
+    @Override
+    public StreamObserver<BytesRequest> clientStreamBytesByte(StreamObserver<StringResponse> responseObserver) {
+        StringBuilder fileName = new StringBuilder();
+        byte[][] buff = {null};
+
+        return new StreamObserver<BytesRequest>() {
+            @Override
+            public void onNext(BytesRequest bytesRequest) {
+                log.info("clientStreamBytesByte onNext.");
+                // 拼接从客户端多次传来的数据
+                buff[0] = ArrayUtil.addAll(buff[0], bytesRequest.getData().toByteArray());
+                if (StringUtils.isEmpty(fileName.toString())) {
+                    fileName.append(bytesRequest.getFileName());
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                log.info("clientStreamBytesByte onError: {}", throwable);
+            }
+
+            @SneakyThrows
+            @Override
+            public void onCompleted() {
+                log.info("clientStreamBytesByte onCompleted.");
+                byte[] data = buff[0];
+                File uploadFile = new File(uploadFilePath + System.currentTimeMillis() + fileName.toString());
+                // 把byte数组通过流转为文件存储到目标路径
+                FileOutputStream fos = new FileOutputStream(uploadFile);
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
+                IoUtil.copy(byteArrayInputStream, fos);
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fos);
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+                bufferedOutputStream.close();
+                fos.close();
+
+                responseObserver.onNext(StringResponse.newBuilder().setValue(uploadFile.getName()).build());
                 responseObserver.onCompleted();
             }
         };

@@ -111,7 +111,58 @@ public class ClientSideStreamServiceImpl implements ClientSideStreamService {
             @Override
             public void onCompleted() {
                 countDownLatch.countDown();
-                log.info("ClientSideStreamServiceImpl clientStreamString onNext onCompleted");
+                log.info("ClientSideStreamServiceImpl clientStreamBytes onCompleted");
+            }
+        });
+
+        byte[] data = file.getBytes();
+        // 把上传的文件分段，每段512K
+        int buffLength = 512 * 1024;
+        byte[][] splitData = ArrayUtil.split(data, buffLength);
+        // 分批次向服务器发送数据，每次发送512K
+        for (byte[] splitDatum : splitData) {
+            observer.onNext(builder.setData(ByteString.copyFrom(splitDatum)).build());
+        }
+        observer.onCompleted();
+
+        countDownLatch.await(1, TimeUnit.MINUTES);
+        result.insert(0, "http://" + serverDomain + ":" + serverPort + "/");
+        return result.toString();
+    }
+
+    /**
+     * 客户端流式传输 - bytes 服务端通过byte数组接收
+     * @param file
+     * @return
+     */
+    @SneakyThrows
+    @Override
+    public String clientStreamBytesByte(MultipartFile file) {
+        if (ObjectUtil.isEmpty(file)) {
+            return "请上传文件";
+        }
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        BytesRequest.Builder builder = BytesRequest.newBuilder();
+        builder.setFileName(file.getOriginalFilename());
+        log.info("OriginalFileName: " + file.getOriginalFilename());
+
+        StringBuilder result = new StringBuilder();
+        StreamObserver<BytesRequest> observer = serviceStub.clientStreamBytesByte(new StreamObserver<StringResponse>() {
+            @Override
+            public void onNext(StringResponse stringResponse) {
+                log.info("ClientSideStreamServiceImpl clientStreamBytesByte onNext stringResponse:{}", stringResponse);
+                result.append(stringResponse.getValue());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                log.error("ClientSideStreamServiceImpl clientStreamBytesByte onError: ", throwable);
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+                log.info("ClientSideStreamServiceImpl clientStreamBytesByte onCompleted");
             }
         });
 
