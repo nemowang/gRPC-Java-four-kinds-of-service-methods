@@ -33,4 +33,10 @@ public class ClientSideStreamController {
     public String clientStreamBytes(MultipartFile file) {
         return clientSideStreamService.clientStreamBytes(file);
     }
+
+    @PostMapping("clientStreamBytesByte")
+    @ApiOperation(value = "客户端流式传输 - bytes 服务端通过byte数组接收")
+    public String clientStreamBytesByte(MultipartFile file) {
+        return clientSideStreamService.clientStreamBytesByte(file);
+    }
 }

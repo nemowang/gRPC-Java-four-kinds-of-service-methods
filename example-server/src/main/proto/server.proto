@@ -27,6 +27,9 @@ service ClientSideStreamService {
     // 客户端流式传输 - 字符串
     rpc clientStreamString(stream StringRequest) returns (StringResponse);
 
-    // TODO 客户端流式传输 - bytes 返回上传文件的保存路径
+    // 客户端流式传输 - bytes 返回上传文件的保存路径
     rpc clientStreamBytes(stream BytesRequest) returns (StringResponse);
+
+    // 客户端流式传输 - bytes 服务端通过byte数组接收
+    rpc clientStreamBytesByte(stream BytesRequest) returns (StringResponse);
 }

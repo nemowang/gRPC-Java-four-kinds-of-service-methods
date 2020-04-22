@@ -20,4 +20,11 @@ public interface ClientSideStreamService {
      * @return
      */
     String clientStreamBytes(MultipartFile file);
+
+    /**
+     * 客户端流式传输 - bytes 服务端通过byte数组接收
+     * @param file
+     * @return
+     */
+    String clientStreamBytesByte(MultipartFile file);
 }
