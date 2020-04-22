@@ -111,7 +111,7 @@ public class ClientSideStreamServiceImpl implements ClientSideStreamService {
             @Override
             public void onCompleted() {
                 countDownLatch.countDown();
-                log.info("ClientSideStreamServiceImpl clientStreamString onNext onCompleted");
+                log.info("ClientSideStreamServiceImpl clientStreamBytes onCompleted");
             }
         });
 
@@ -150,19 +150,19 @@ public class ClientSideStreamServiceImpl implements ClientSideStreamService {
         StreamObserver<BytesRequest> observer = serviceStub.clientStreamBytesByte(new StreamObserver<StringResponse>() {
             @Override
             public void onNext(StringResponse stringResponse) {
-                log.info("ClientSideStreamServiceImpl clientStreamBytes onNext stringResponse:{}", stringResponse);
+                log.info("ClientSideStreamServiceImpl clientStreamBytesByte onNext stringResponse:{}", stringResponse);
                 result.append(stringResponse.getValue());
             }
 
             @Override
             public void onError(Throwable throwable) {
-                log.error("ClientSideStreamServiceImpl clientStreamBytes onError: ", throwable);
+                log.error("ClientSideStreamServiceImpl clientStreamBytesByte onError: ", throwable);
             }
 
             @Override
             public void onCompleted() {
                 countDownLatch.countDown();
-                log.info("ClientSideStreamServiceImpl clientStreamString onNext onCompleted");
+                log.info("ClientSideStreamServiceImpl clientStreamBytesByte onCompleted");
             }
         });
 

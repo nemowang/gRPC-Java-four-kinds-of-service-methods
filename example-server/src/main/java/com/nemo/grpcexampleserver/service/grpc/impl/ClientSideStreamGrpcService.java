@@ -145,6 +145,7 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
             @SneakyThrows
             @Override
             public void onCompleted() {
+                log.info("clientStreamBytesByte onCompleted.");
                 byte[] data = buff[0];
                 File uploadFile = new File(uploadFilePath + System.currentTimeMillis() + fileName.toString());
                 // 把byte数组通过流转为文件存储到目标路径
