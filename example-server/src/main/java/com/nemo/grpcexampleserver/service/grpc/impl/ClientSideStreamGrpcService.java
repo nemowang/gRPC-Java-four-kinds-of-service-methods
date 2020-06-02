@@ -7,6 +7,7 @@ import com.nemo.grpcexampleserver.BytesRequest;
 import com.nemo.grpcexampleserver.ClientSideStreamServiceGrpc;
 import com.nemo.grpcexampleserver.StringRequest;
 import com.nemo.grpcexampleserver.StringResponse;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -159,6 +160,39 @@ public class ClientSideStreamGrpcService extends ClientSideStreamServiceGrpc.Cli
                 fos.close();
 
                 responseObserver.onNext(StringResponse.newBuilder().setValue(uploadFile.getName()).build());
+                responseObserver.onCompleted();
+            }
+        };
+    }
+
+    /**
+     * 客户端流式传输 - 服务端抛异常
+     * @param responseObserver
+     * @return
+     */
+    @Override
+    public StreamObserver<StringRequest> clientStreamThrowException(StreamObserver<StringResponse> responseObserver) {
+        // 使用StringBuilder接收多次从客户端传来的数据
+        StringBuilder stringBuilder = new StringBuilder();
+
+        return new StreamObserver<StringRequest>() {
+            @Override
+            public void onNext(StringRequest request) {
+                log.info("clientStreamThrowException onNext request={}", request.getValue());
+                // 拼接客户端分批次传输的数据
+                stringBuilder.append(request.getValue());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                log.error("clientStreamThrowException onError: ", throwable);
+            }
+
+            @Override
+            public void onCompleted() {
+                log.error("clientStreamThrowException onCompleted.");
+                // 抛异常
+                responseObserver.onError(Status.UNAVAILABLE.withDescription("成功抛出异常").asRuntimeException());
                 responseObserver.onCompleted();
             }
         };

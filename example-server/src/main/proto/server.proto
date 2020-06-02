@@ -32,6 +32,9 @@ service ClientSideStreamService {
 
     // 客户端流式传输 - bytes 服务端通过byte数组接收
     rpc clientStreamBytesByte(stream BytesRequest) returns (StringResponse);
+
+    // 客户端流式传输 - 服务端抛异常
+    rpc clientStreamThrowException(stream StringRequest) returns (StringResponse);
 }
 
 // 双向流式传输

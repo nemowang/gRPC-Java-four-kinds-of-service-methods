@@ -8,6 +8,7 @@ import com.nemo.grpcexampleserver.BytesRequest;
 import com.nemo.grpcexampleserver.ClientSideStreamServiceGrpc;
 import com.nemo.grpcexampleserver.StringRequest;
 import com.nemo.grpcexampleserver.StringResponse;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -179,5 +180,50 @@ public class ClientSideStreamServiceImpl implements ClientSideStreamService {
         countDownLatch.await(1, TimeUnit.MINUTES);
         result.insert(0, "http://" + serverDomain + ":" + serverPort + "/");
         return result.toString();
+    }
+
+    /**
+     * 客户端流式传输 - 服务端抛异常
+     * @return
+     */
+    @Override
+    @SneakyThrows
+    public String clientStreamThrowException() {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        StringBuilder result = new StringBuilder();
+        final String[] exceptionMessage = {""};
+
+        StreamObserver<StringRequest> observer = serviceStub.clientStreamThrowException(new StreamObserver<StringResponse>() {
+            @Override
+            public void onNext(StringResponse stringResponse) {
+                log.info("ClientSideStreamServiceImpl clientStreamThrowException onNext stringResponse:{}", stringResponse);
+                result.append(stringResponse.getValue());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                log.error("ClientSideStreamServiceImpl clientStreamThrowException onError: ", throwable);
+                countDownLatch.countDown();
+                Status status = Status.fromThrowable(throwable);
+                exceptionMessage[0] = status.getDescription();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+                log.info("ClientSideStreamServiceImpl clientStreamThrowException onNext onCompleted");
+            }
+        });
+
+        // 分批次向服务端发送数据
+        for (int i = 0; i < 10; i++) {
+            StringRequest.Builder builder = StringRequest.newBuilder();
+            builder.setValue("客户端流式传输 - 字符串 第" + i + "次发送数据" + System.lineSeparator());
+            observer.onNext(builder.build());
+        }
+        observer.onCompleted();
+        countDownLatch.await();
+
+        return exceptionMessage[0];
     }
 }

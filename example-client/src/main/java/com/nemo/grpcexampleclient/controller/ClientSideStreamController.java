@@ -39,4 +39,10 @@ public class ClientSideStreamController {
     public String clientStreamBytesByte(MultipartFile file) {
         return clientSideStreamService.clientStreamBytesByte(file);
     }
+
+    @PostMapping("clientStreamThrowException")
+    @ApiOperation(value = "客户端流式传输 - 服务端抛异常")
+    public String clientStreamThrowException() {
+        return clientSideStreamService.clientStreamThrowException();
+    }
 }

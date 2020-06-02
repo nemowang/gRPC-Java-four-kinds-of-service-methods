@@ -27,4 +27,10 @@ public interface ClientSideStreamService {
      * @return
      */
     String clientStreamBytesByte(MultipartFile file);
+
+    /**
+     * 客户端流式传输 - 服务端抛异常
+     * @return
+     */
+    String clientStreamThrowException();
 }
