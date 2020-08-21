@@ -30,4 +30,10 @@ public class ExampleController {
         StringResponse response = exampleServiceBlockingStub.sayHelloWorld(request);
         return response.getValue();
     }
+
+    @PostMapping("sayHelloWorldThroughJenkins")
+    @ApiOperation(value = "Jenkins Test")
+    public String sayHelloWorldThroughJenkins() {
+        return "hello world from jenkins";
+    }
 }
