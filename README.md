@@ -5,3 +5,5 @@ gRPC four kinds of service methods for Java.
 <br>基于<b>Java</b>代码实现
 ### 项目SwaggerUI地址
 http://localhost:8090/swagger-ui.html
+
+[link](example-server/src/main/resources/application.properties)
